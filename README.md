@@ -1,4 +1,4 @@
-# nagar_parishad
+# Nagar Parishad
 
 A new Flutter application.
 
