@@ -6,10 +6,18 @@ import '../model/sharedprefmodel.dart';
 
 class AddPropertyApi {
   Future<Map<String, dynamic>> addPropertyService(surveyNo, zoneNo, wardNo, plotNo, propertyOld, propertyNew, address,
-      propertyType, totalAreaF, rentStatus, rentAreaF, List floorId, constYear, constTypeId, usableTypeId, constAreaF, constAreaM,
-      name, ownerAddress, contactNo, email, adhaarNo, BuildContext context) async {
+      propertyType, totalAreaF, totalAreaM, rentStatus, rentAreaF, rentAreaM, floorId, constYear, constTypeId, usableTypeId,
+      constAreaF, constAreaM, name, ownerAddress, contactNo, email, adhaarNo, BuildContext context) async {
 
     String url = "http://www.internsorbit.com:8080/nagarparishad/addproperty/";
+
+    List<Map> carOptionJson = [];
+    for (int i=0; i<floorId.length; i++) {
+      ConstInfo constInfoList = ConstInfo(
+          floorId[i], constYear[i], constTypeId[i], usableTypeId[i],
+          constAreaF[i], constAreaM[i]);
+      carOptionJson.add(constInfoList.TojsonData());
+    }
 
     var body = {
       "basic_info": {
@@ -22,32 +30,16 @@ class AddPropertyApi {
         "address": address,
         "property_type": propertyType,
         "total_area_in_foot": totalAreaF,
-        "total_area_in_meter": totalAreaF,
+        "total_area_in_meter": totalAreaM,
         "rent_status": rentStatus,
         "rent_area_in_foot": rentAreaF,
-        "rent_area_in_meter": rentAreaF,
+        "rent_area_in_meter": rentAreaM,
         "latitude": "21.1458",
         "longitude": "79.0882",
         "user_id": "CM74"
       },
-      "construction_info": [
-        {
-          "floor_no": floorId[0],
-          "construction_year": constYear[0],
-          "construction_type_id": constTypeId[0],
-          "usable_type_id": usableTypeId[0],
-          "construction_area_foot": constAreaF[0],
-          "construction_area_meter": constAreaM[0]
-        },
-        // {
-        //   "floor_no": "FL18",
-        //   "construction_year": "2020",
-        //   "construction_type_id": "CT11",
-        //   "usable_type_id": "UT11",
-        //   "construction_area_foot": "2000",
-        //   "construction_area_meter": "40"
-        // }
-      ],
+      "construction_info":
+        carOptionJson,
       "evidence": [
       {
           "evidence": "",
@@ -56,7 +48,7 @@ class AddPropertyApi {
       ],
       "owner": {
         "name": name,
-        "adddress": ownerAddress,
+        "address": ownerAddress,
         "contact_no": contactNo,
         "email": email,
         "aadhar_no": adhaarNo
@@ -84,12 +76,26 @@ class AddPropertyApi {
       _displaySnackBar(context);
       throw Exception();
     }
-
     return responseData;
   }
 
   _displaySnackBar(BuildContext context) {
     const snackBar = SnackBar(content: Text('Error occurred!'));
     Scaffold.of(context).showSnackBar(snackBar);
+  }
+}
+
+class ConstInfo {
+  String floorId, constYear, constTypeId, usableTypeId, constAreaF, constAreaM;
+  ConstInfo(this.floorId, this.constYear, this.constTypeId, this.usableTypeId, this.constAreaF, this.constAreaM);
+  Map<String, dynamic> TojsonData() {
+    var map = new Map<String, dynamic>();
+    map["floor_id"] = floorId;
+    map["const_year"] = constYear;
+    map["const_type_id"] = constTypeId;
+    map["usable_type_id"] = usableTypeId;
+    map["const_area_foot"] = constAreaF;
+    map["const_area_meter"] = constAreaM;
+    return map;
   }
 }

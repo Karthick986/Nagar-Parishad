@@ -138,7 +138,8 @@ class _BasicInfoState extends State<BasicInfo> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => ConstructionInfo(surveyNo: surveyNo, zoneNo: _zoneSelected, wardNo: _wardSelected,
           plotNo: plotNo, propertyOld: propertyNoOld, propertyNew: propertyNoNew, address: address, propertyType: _propertyType,
-          totalAreaF: totalAreaF, rentStatus: _rentStatus, rentAreaF: rentAreaF)));
+          totalAreaF: totalAreaF, totalAreaM: double.parse((initialtotalArea).toStringAsFixed(3)).toString(), rentStatus: _rentStatus,
+          rentAreaF: rentAreaF, rentAreaM: double.parse((initialRentArea).toStringAsFixed(3)).toString(),)));
 
       isLoading = false;
       // _insert(surveyNo, _zoneSelected, _wardSelected, plotNo, propertyNoOld, propertyNoNew,
@@ -169,9 +170,13 @@ class _BasicInfoState extends State<BasicInfo> {
       DatabaseHelper.propertyNoNew: propertyNoNew,
       DatabaseHelper.address: address,
       DatabaseHelper.totalAreaF: totalAreaF,
-      DatabaseHelper.totalAreaM: totalAreaM,
+      DatabaseHelper.totalAreaM: double.parse(
+          (initialtotalArea).toStringAsFixed(3))
+          .toString(),
       DatabaseHelper.rentAreaF: rentAreaF,
-      DatabaseHelper.rentAreaM: rentAreaM,
+      DatabaseHelper.rentAreaM: double.parse(
+          (initialRentArea).toStringAsFixed(3))
+          .toString(),
       DatabaseHelper.propertyType: propertyType,
       DatabaseHelper.rentStatus: rentStatus,
     };
@@ -183,7 +188,7 @@ class _BasicInfoState extends State<BasicInfo> {
     isLoading = false;
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ConstructionInfo()));
+        context, MaterialPageRoute(builder: (context) => const ConstructionInfo()));
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -318,7 +323,6 @@ class _BasicInfoState extends State<BasicInfo> {
                               );
                             }).toList(),
                             onChanged: (newVal) {
-                              print(newVal);
                               setState(() {
                                 _zoneSelected = newVal;
                               });
@@ -520,19 +524,20 @@ class _BasicInfoState extends State<BasicInfo> {
                                 controller: _controller,
                                 onSaved: (value) => totalAreaF = value!,
                                 validator: (value) {
-                                  if (value!.isEmpty)
+                                  if (value!.isEmpty) {
                                     return 'Enter total area (f)';
+                                  }
                                   return null;
                                 },
                                 onChanged: (value) {
                                   setState(() {
                                     // ignore: curly_braces_in_flow_control_structures
-                                    if (value.isEmpty)
+                                    if (value.isEmpty) {
                                       initialtotalArea = 0.0;
-                                    // ignore: curly_braces_in_flow_control_structures
-                                    else
+                                    } else {
                                       initialtotalArea =
                                           (double.parse(value) * footTometer);
+                                    }
                                   });
                                 },
                               ),
@@ -624,12 +629,12 @@ class _BasicInfoState extends State<BasicInfo> {
                                 onChanged: (value) {
                                   setState(() {
                                     // ignore: curly_braces_in_flow_control_structures
-                                    if (value.isEmpty)
+                                    if (value.isEmpty) {
                                       initialRentArea = 0.0;
-                                    // ignore: curly_braces_in_flow_control_structures
-                                    else
+                                    } else {
                                       initialRentArea =
                                           (double.parse(value) * footTometer);
+                                    }
                                   });
                                 },
                               ),

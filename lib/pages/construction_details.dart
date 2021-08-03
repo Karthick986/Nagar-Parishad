@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import '../model/sharedprefmodel.dart';
 import 'construction_info.dart';
-import 'package:intl/intl.dart';
 
 class FriendTextFields extends StatefulWidget {
   final int index;
@@ -15,10 +13,9 @@ class FriendTextFields extends StatefulWidget {
 }
 
 class _FriendTextFieldsState extends State<FriendTextFields> {
-  late String constYeardate='Pick';
   double constAreaM = 0.0;
 
-  List floorList=[], constTypeList=[], usableTypeList=[];
+  List floorList=[], constTypeList=[], usableTypeList=[], constYeardate=[];
   dynamic floorId, constId, usableId;
 
   Future<String> getFloorList() async {
@@ -162,7 +159,7 @@ class _FriendTextFieldsState extends State<FriendTextFields> {
                   style: TextStyle(fontSize: 13.0),
                   decoration: InputDecoration(
                     hintStyle: TextStyle(fontSize: 13.0),
-                    hintText: constYeardate,
+                    hintText: ConstructionInfoState.constYear[widget.index],
                     contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                     border: OutlineInputBorder(),
                     suffixIcon: Icon(Icons.calendar_today),
@@ -304,7 +301,7 @@ class _FriendTextFieldsState extends State<FriendTextFields> {
             lastDate: DateTime.now(),
             onChanged: (val) {
               setState(() {
-                constYeardate = val.year.toString();
+                ConstructionInfoState.constYear[widget.index] = val.year.toString();
               });
               Navigator.pop(context);
             },

@@ -10,11 +10,11 @@ class OwnerInfo extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final floorId, constYear, constTypeId, usableTypeId, constAreaF, constAreaM, surveyNo, zoneNo, wardNo,
       // ignore: prefer_typing_uninitialized_variables
-      plotNo, propertyOld, propertyNew, address, propertyType, totalAreaF, rentStatus, rentAreaF;
+      plotNo, propertyOld, propertyNew, address, propertyType, totalAreaF, totalAreaM, rentStatus, rentAreaF, rentAreaM;
 
   const OwnerInfo({Key? key, this.floorId, this.constYear, this.constTypeId, this.usableTypeId, this.constAreaF, this.constAreaM,
     this.surveyNo, this.zoneNo, this.wardNo, this.plotNo, this.propertyOld, this.propertyNew, this.address, this.propertyType,
-    this.totalAreaF, this.rentStatus, this.rentAreaF}) : super(key: key);
+    this.totalAreaF, this.totalAreaM, this.rentStatus, this.rentAreaF, this.rentAreaM}) : super(key: key);
 
   @override
   _OwnerInfoState createState() => _OwnerInfoState();
@@ -38,8 +38,8 @@ class _OwnerInfoState extends State<OwnerInfo> {
       isLoading = true;
       AddPropertyApi apiService = AddPropertyApi();
       apiService.addPropertyService(widget.surveyNo, widget.zoneNo, widget.wardNo, widget.plotNo, widget.propertyOld,
-          widget.propertyNew, widget.address, widget.propertyType, widget.totalAreaF, widget.rentStatus, widget.rentAreaF,
-          widget.floorId, widget.constYear, widget.constTypeId, widget.usableTypeId, widget.constAreaF, widget.constAreaF,
+          widget.propertyNew, widget.address, widget.propertyType, widget.totalAreaF, widget.totalAreaM, widget.rentStatus,
+          widget.rentAreaF, widget.rentAreaM, widget.floorId, widget.constYear, widget.constTypeId, widget.usableTypeId, widget.constAreaF, widget.constAreaF,
           name, ownerAddress, contactNo, email, adhaarNo, context).then((value) {
         if (value['status'] == 200) {
 
@@ -65,7 +65,7 @@ class _OwnerInfoState extends State<OwnerInfo> {
                   ],
                 ),
           );
-        } else if (value['status'] != 200) {
+        } else {
           setState(() {
             isLoading = false;
           });
@@ -81,7 +81,7 @@ class _OwnerInfoState extends State<OwnerInfo> {
         appBar: AppBar(
           title: const Text('Owner Information'),
         ),
-        body: Form(
+        body: Builder(builder: (context) => Form(
             key: _formKey,
             child: Column(children: [
               Expanded(
@@ -234,7 +234,7 @@ class _OwnerInfoState extends State<OwnerInfo> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.all(5.0),
-                child: (isLoading) ? const Center(child: CircularProgressIndicator(),) :
+                child: (isLoading) ? Center(child: Container(child: const CircularProgressIndicator(), margin: EdgeInsets.only(bottom: 10.0),),) :
                 ElevatedButton(
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -259,6 +259,6 @@ class _OwnerInfoState extends State<OwnerInfo> {
                   ),
                 ),
               ),
-            ])));
+            ]))));
   }
 }

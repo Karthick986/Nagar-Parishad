@@ -6,10 +6,11 @@ import 'construction_details.dart';
 
 class ConstructionInfo extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
-  final surveyNo, zoneNo, wardNo, plotNo, propertyOld, propertyNew, address, propertyType, totalAreaF, rentStatus, rentAreaF;
+  final surveyNo, zoneNo, wardNo, plotNo, propertyOld, propertyNew, address, propertyType, totalAreaF,
+      totalAreaM, rentStatus, rentAreaF, rentAreaM;
 
   const ConstructionInfo({Key? key, this.surveyNo, this.zoneNo, this.wardNo, this.plotNo, this.propertyOld, this.propertyNew,
-    this.address, this.propertyType, this.totalAreaF, this.rentStatus, this.rentAreaF}) : super(key: key);
+    this.address, this.propertyType, this.totalAreaF, this.totalAreaM, this.rentStatus, this.rentAreaF, this.rentAreaM}) : super(key: key);
 
   @override
   ConstructionInfoState createState() => ConstructionInfoState();
@@ -17,11 +18,11 @@ class ConstructionInfo extends StatefulWidget {
 
 class ConstructionInfoState extends State<ConstructionInfo> {
   static List floorIdList = [null];
-  static List<String?> constYear = [null];
+  static List constYear = [null];
   static List constTypeid = [null];
   static List usableTypeId = [null];
-  static List<String?> constAreaF = [null];
-  static List<String?> constAreaM = [null];
+  static List constAreaF = [null];
+  static List constAreaM = [null];
 
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
@@ -45,8 +46,8 @@ class ConstructionInfoState extends State<ConstructionInfo> {
           context, MaterialPageRoute(builder: (context) => OwnerInfo(floorId: floorIdList, constYear: constYear,
           constTypeId: constTypeid, usableTypeId: usableTypeId, constAreaF: constAreaF, constAreaM: constAreaM, surveyNo: widget.surveyNo, zoneNo: widget.zoneNo,
           wardNo: widget.wardNo, plotNo: widget.plotNo, propertyOld: widget.propertyOld, propertyNew: widget.propertyNew,
-          address: widget.address, propertyType: widget.propertyType, totalAreaF: widget.totalAreaF, rentStatus: widget.rentStatus,
-          rentAreaF: widget.rentAreaF)));
+          address: widget.address, propertyType: widget.propertyType, totalAreaF: widget.totalAreaF, totalAreaM: widget.totalAreaM, rentStatus: widget.rentStatus,
+          rentAreaF: widget.rentAreaF, rentAreaM: widget.rentAreaM)));
 
       isLoading = false;
     });
@@ -152,13 +153,12 @@ class ConstructionInfoState extends State<ConstructionInfo> {
     return InkWell(
       onTap: () {
         if (add) {
-          // add new text-fields at the top of all friends textfields
-          floorIdList.insert(0, null);
-          constYear.insert(0, null);
-          constTypeid.insert(0, null);
-          usableTypeId.insert(0, null);
-          constAreaF.insert(0, null);
-          constAreaM.insert(0, null);
+          floorIdList.insert(0, floorIdList[index]);
+          constYear.insert(0, constYear[index]);
+          constTypeid.insert(0, constTypeid[index]);
+          usableTypeId.insert(0, usableTypeId[index]);
+          constAreaF.insert(0, constAreaF[index]);
+          constAreaM.insert(0, constAreaM[index]);
         } else {
           floorIdList.removeAt(index);
           constYear.removeAt(index);
